@@ -1,0 +1,4 @@
+lex.yy.c
+mysh
+shell.tab.c
+shell.tab.h
