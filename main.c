@@ -1,4 +1,5 @@
 #include "main.h"
+#include "util.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,6 +43,8 @@ void execute_pipeline(Command **commands)
 
   if (strcmp(commands[0]->args[0], "quit") == 0)
   {
+    free_commands(commands);
+
     exit(0);
   }
 
@@ -85,12 +88,6 @@ void execute_pipeline(Command **commands)
     else if (pid > 0)
     {
       close(fd[1]);
-      for (int j = 0; commands[i]->args[j] != NULL; j++)
-      {
-        free(commands[i]->args[j]);
-      }
-      free(commands[i]->args);
-      free(commands[i]);
 
       input_fd = fd[0];
       i++;
@@ -106,6 +103,8 @@ void execute_pipeline(Command **commands)
   {
     waitpid(pids[i], NULL, 0);
   }
+
+  free_commands(commands);
 
   close(input_fd);
 }
